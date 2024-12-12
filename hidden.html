@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Parámetros del Sistema</title>
+    <link rel="stylesheet" href="css/style-hidden.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Obtener el estado inicial de los parámetros
+            fetch('php/get_parameters.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        for (const [parameter, value] of Object.entries(data.parameters)) {
+                            const switchInput = document.getElementById(parameter);
+                            const statusLabel = document.getElementById(`status-${parameter}`);
+                            switchInput.checked = value === 1;
+                            statusLabel.textContent = value === 1 ? 'Activado' : 'Desactivado';
+                        }
+                    } else {
+                        console.error('Error al cargar parámetros:', data.error);
+                    }
+                })
+                .catch(error => console.error('Error al conectar con el servidor:', error));
+        });
+
+        function toggleParameter(parameter) {
+            const switchInput = document.getElementById(parameter);
+            const statusLabel = document.getElementById(`status-${parameter}`);
+
+            // Alternar el estado del parámetro
+            fetch('php/toggle_parameter.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `parameter=${parameter}`  // Asegurarse de que el parámetro se pasa correctamente
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    statusLabel.textContent = switchInput.checked ? 'Activado' : 'Desactivado';
+                } else {
+                    console.error('Error al actualizar parámetro:', data.error);
+                }
+            })
+            .catch(error => console.error('Error al conectar con el servidor:', error));
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Gestión de Parámetros del Sistema</h1>
+    </header>
+    <main>
+        <div class="container">
+            <div class="card">
+                <h2>Control de Sensores</h2>
+                <div class="parameter">
+                    <label for="movimiento">Movimiento</label>
+                    <input type="checkbox" id="movimiento" class="switch" onclick="toggleParameter('movimiento')">
+                    <span id="status-movimiento">Cargando...</span>
+                </div>
+                <div class="parameter">
+                    <label for="temperatura">Temperatura</label>
+                    <input type="checkbox" id="temperatura" class="switch" onclick="toggleParameter('temperatura')">
+                    <span id="status-temperatura">Cargando...</span>
+                </div>
+                <div class="parameter">
+                    <label for="pulso">Pulso Cardiaco</label>
+                    <input type="checkbox" id="pulso" class="switch" onclick="toggleParameter('pulso')">
+                    <span id="status-pulso">Cargando...</span>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Alertas del Sistema</h2>
+                <div class="parameter">
+                    <label for="alerta_violencia">Alerta de Violencia</label>
+                    <input type="checkbox" id="alerta_violencia" class="switch" onclick="toggleParameter('alerta_violencia')">
+                    <span id="status-alerta_violencia">Cargando...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sistema IoT - Gestión de Parámetros</p>
+    </footer>
+</body>
+</html>

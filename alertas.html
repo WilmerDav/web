@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alertas</title>
+    <link rel="stylesheet" href="css/style-alertas.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            function cargarAlertas() {
+                fetch('php/alertas.php')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const tableBody = document.querySelector('.data-table tbody');
+                        tableBody.innerHTML = '';
+
+                        if (data.success && Array.isArray(data.alertas) && data.alertas.length > 0) {
+                            data.alertas.forEach(alert => {
+                                const row = document.createElement('tr');
+                                row.innerHTML = `
+                                    <td>${alert.id_alerta}</td>
+                                    <td>${alert.id_dispositivo}</td>
+                                    <td>${alert.fecha_alerta}</td>
+                                    <td>${alert.evento_detectado}</td>
+                                `;
+                                tableBody.appendChild(row);
+                            });
+                        } else {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `<td colspan="4">No hay alertas activas</td>`;
+                            tableBody.appendChild(row);
+                        }
+                    })
+                    .catch(error => console.error('Error cargando alertas:', error));
+            }
+
+            cargarAlertas();
+            setInterval(cargarAlertas, 5000);
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="historial.html">Historial</a></li>
+                <li><a href="alertas.html">Alertas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="alertas">
+        <div class="container">
+            <h1>Alertas Activas</h1>
+            <p>Revisa las alertas de seguridad detectadas por los dispositivos IoT.</p>
+            <div class="info-section">
+                <h2>Historial de Alertas</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID Alerta</th>
+                            <th>ID Dispositivo</th>
+                            <th>Fecha y Hora</th>
+                            <th>Evento Detectado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

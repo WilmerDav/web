@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial</title>
+    <link rel="stylesheet" href="css/style-historial.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('php/get_historial.php')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('.data-table tbody');
+                    tableBody.innerHTML = ''; // Limpiar tabla
+
+                    if (data.success && data.historial.length > 0) {
+                        data.historial.forEach(record => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${record.id_dispositivo}</td>
+                                <td>${record.fecha_hora}</td>
+                                <td>${record.evento_detectado}</td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td colspan="3">No hay historial disponible</td>`;
+                        tableBody.appendChild(row);
+                    }
+                })
+                .catch(error => console.error('Error cargando historial:', error));
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="historial.html">Historial</a></li>
+                <li><a href="alertas.html">Alertas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="historial">
+        <div class="container">
+            <h1>Historial de Dispositivos</h1>
+            <p>Consulta el historial de monitoreo y eventos registrados por el sistema IoT.</p>
+
+            <div class="info-section">
+                <h2>Historial</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID Dispositivo</th>
+                            <th>Fecha y Hora</th>
+                            <th>Evento Detectado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

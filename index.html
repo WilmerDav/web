@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema IoT - Inicio</title>
+    <link rel="stylesheet" href="css/style-index.css">
+    <script>
+        window.onload = function() {
+            fetch('php/check_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status !== 'logged_in') {
+                        window.location.href = 'login.html';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error verificando la sesión:', error);
+                    window.location.href = 'login.html';
+                });
+        };
+
+        function toggleDropdownMenu() {
+            const dropdown = document.getElementById('dropdown-menu');
+            dropdown.classList.toggle('show');
+        }
+
+        function redirectToSecret() {
+            window.location.href = 'hidden.html'; // Redirige a la página secreta
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Sistema IoT</h1>
+            </div>
+            <ul class="main-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="historial.html">Historial</a></li>
+                <li><a href="alertas.html">Alertas</a></li>
+            </ul>
+            <!-- Menú desplegable flotante -->
+            <div class="dropdown-wrapper">
+                <button class="dropdown-button" onclick="toggleDropdownMenu()">Opciones</button>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <a href="configuracion.html">Configuración</a>
+                    <a href="ayuda.html">Ayuda</a>
+                    <a href="php/logout.php" class="logout-btn">Cerrar Sesión</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section id="hero">
+        <div class="hero-container">
+            <h1>Bienvenido al Sistema de Monitoreo IoT</h1>
+            <p>
+                Un sistema diseñado para brindar seguridad y protección personal en tiempo real, utilizando sensores avanzados para detectar movimiento, temperatura y ritmo cardíaco. Este sistema es ideal para entornos domésticos y está orientado a la prevención de situaciones de riesgo.
+            </p>
+        </div>
+    </section>
+
+    <section id="inicio">
+        <div class="container">
+            <h2>¿Qué es el Sistema de Monitoreo IoT?</h2>
+            <p>
+                El Sistema de Monitoreo IoT combina tecnología avanzada y sensores inteligentes para proporcionar un monitoreo continuo y en tiempo real. 
+                Este innovador sistema está diseñado para detectar cambios en el entorno, como movimientos bruscos, alteraciones en la temperatura y el ritmo cardíaco. 
+                Además, ofrece la capacidad de alertar automáticamente a contactos de emergencia o autoridades competentes en situaciones críticas.
+            </p>
+
+            <hr>
+
+            <h3>¿Por qué es necesario?</h3>
+            <p>
+                En un mundo donde la seguridad personal se ha vuelto una prioridad, este sistema aborda problemas reales como la prevención de situaciones de violencia
+                o accidentes domésticos. A través de un monitoreo constante, se garantiza la tranquilidad del usuario y su familia, creando un entorno más seguro.
+            </p>
+
+            <hr>
+
+            <h3>Ventajas frente a otros sistemas</h3>
+            <p>
+                A diferencia de otros dispositivos, este sistema se destaca por su integración de sensores avanzados, como sensores de movimiento, temperatura y ritmo cardíaco.
+                Gracias a su diseño modular y adaptable, puede personalizarse para satisfacer necesidades específicas del usuario, como la integración con dispositivos móviles
+                o la ampliación de funcionalidades.
+            </p>
+
+            <hr>
+
+            <h3>Escenarios de Uso</h3>
+            <ul>
+                <li><strong>Protección de personas mayores:</strong> Detección de caídas o movimientos bruscos.</li>
+                <li><strong>Seguridad en el hogar:</strong> Alertas en caso de temperaturas peligrosas o inusuales.</li>
+                <li><strong>Monitoreo médico:</strong> Vigilancia en tiempo real para personas con condiciones específicas.</li>
+            </ul>
+
+            <hr>
+
+            <h3>Una solución con visión a futuro</h3>
+            <p>
+                Este sistema no solo se limita al monitoreo doméstico, sino que también puede ser aplicado en industrias, oficinas, y otros entornos.
+                Su escalabilidad permite añadir nuevos sensores y funcionalidades, asegurando que el sistema evolucione con las necesidades del usuario.
+            </p>
+        </div>
+    </section>
+
+    <section id="funcionalidades">
+        <div class="container">
+            <h2>Funcionalidades Avanzadas</h2>
+            <div class="image-gallery">
+                <div class="image-item">
+                    <div class="image-container">
+                        <img src="images/imagenIOT (1).jpeg" alt="Sistema IoT">
+                        <div class="hover-text">Monitorización constante con alertas en tiempo real.</div>
+                    </div>
+                </div>
+                <div class="image-item">
+                    <div class="image-container">
+                        <img src="images/sentoresIOT (1).jpeg" alt="Sensor Inteligente">
+                        <div class="hover-text">Dispositivos inteligentes para mayor seguridad.</div>
+                    </div>
+                </div>
+                <div class="image-item">
+                    <div class="image-container">
+                        <img src="images/PanelIOT.png" alt="Panel de control">
+                        <div class="hover-text">Panel interactivo para ver datos en vivo.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ventajas">
+        <div class="container">
+            <h2>Ventajas del Sistema IoT</h2>
+            <ul>
+                <li>Acceso a datos en tiempo real desde cualquier lugar.</li>
+                <li>Facilidad de uso con una interfaz intuitiva y amigable.</li>
+                <li>Integración con dispositivos personales para monitoreo continuo.</li>
+                <li>Escalabilidad para incluir nuevos sensores y funcionalidades.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Botón secreto -->
+    <div id="secret-button" onclick="redirectToSecret()"></div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Sistema de Monitoreo IoT - Protección Personal en Tiempo Real</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
